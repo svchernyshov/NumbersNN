@@ -5,9 +5,11 @@
 class Neuron
 {
 public:
-	Neuron();
+	// Заполнение массива весов нулевыми значениями, омега0 будет равна 0.
+	Neuron(double om0 = 0.0);
 
-	void setOm0(double om0) { om0_ = om0; }
+	void setOm0(double om0);
+	double om0() const;
 
 	// Функция подающая на вход нейрона значения и возвращающая результат.
 	int run(const std::vector<int> &inputs);

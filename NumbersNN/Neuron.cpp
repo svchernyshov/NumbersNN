@@ -1,8 +1,18 @@
 #include "Neuron.h"
 
-Neuron::Neuron() : weight_(15, 0)
+Neuron::Neuron(double om0) : weight_(15, 0)
 {
-	om0_ = 0;
+	om0_ = om0;
+}
+
+void Neuron::setOm0(double om0)
+{
+	om0_ = om0;
+}
+
+double Neuron::om0() const
+{
+	return om0_;
 }
 
 int Neuron::run(const std::vector<int> &inputs)
@@ -19,7 +29,7 @@ int Neuron::run(const std::vector<int> &inputs)
 		++iterW;
 	}
 	sum -= om0_;
-	if (sum >= 0) {
+	if (sum > 0) {
 		return 1;
 	}
 	else {

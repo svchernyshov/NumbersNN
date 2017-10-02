@@ -401,11 +401,23 @@ void out(const std::vector<int> &inputs)
 
 int main()
 {
+	std::vector<int> om0s;
+	om0s.push_back(5);
+	om0s.push_back(11);
+	om0s.push_back(11);
+	om0s.push_back(9);
+	om0s.push_back(11);
+	om0s.push_back(12);
+	om0s.push_back(7);
+	om0s.push_back(13);
+	om0s.push_back(12);
+	om0s.push_back(12);
+
 	std::vector<std::vector<int>> inputs = getInputs();
 	std::vector<std::vector<int>> outputs = getOutputs();
-
-	Network network;
-	for (size_t i = 0; i < 3; ++i) {
+	
+	Network network(om0s);
+	for (size_t i = 0; i < 100; ++i) {
 		auto iter = inputs.begin();
 		auto end = inputs.end();
 		auto iterOut = outputs.begin();

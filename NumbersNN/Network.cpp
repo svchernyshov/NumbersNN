@@ -1,20 +1,44 @@
 #include "Network.h"
 
-Network::Network() : neurons_(10)
+Network::Network(const std::vector<int> om0s, double eps) : neurons_(10)
 {
-	eps_ = 0.5;
-	neurons_[0].setOm0(5);
-	neurons_[1].setOm0(11);
-	neurons_[2].setOm0(11);
-	neurons_[3].setOm0(9);
-	neurons_[4].setOm0(11);
-	neurons_[5].setOm0(12);
-	neurons_[6].setOm0(7);
-	neurons_[7].setOm0(13);
-	neurons_[8].setOm0(12);
-	neurons_[9].setOm0(12);
+	if (eps > 0 && eps < 1)
+		eps_ = eps;
+	else
+		eps_ = 0.5;
+	for (size_t i = 0; i < 10; ++i) {
+		neurons_[i].setOm0(om0s[i]);
+	}
 }
 
+void Network::setEps(double eps)
+{
+	if (eps > 0 && eps < 1)
+		eps_ = eps;
+}
+
+double Network::eps() const
+{
+	return eps_;
+}
+
+void Network::setOm0s(const std::vector<int> om0s)
+{
+	if (om0s.size() == 10) {
+		for (size_t i = 0; i < 10; ++i) {
+			neurons_[i].setOm0(om0s[i]);
+		}
+	}
+}
+
+std::vector<int> Network::om0s() const
+{
+	std::vector<int> result;
+	for (size_t i = 0; i < 10; ++i) {
+		result.push_back(neurons_[i].om0());
+	}
+	return result;
+}
 
 std::vector<int> Network::run(const std::vector<int> &inputs)
 {
@@ -37,13 +61,13 @@ bool Network::educate(const std::vector<int> &inputs, const std::vector<int> out
 		return false;
 	}
 
-	auto iter = realResult.begin();
+	auto iterRealRes = realResult.begin();
 	auto end = realResult.end();
 	auto iterOutputs = outputs.begin();
 	auto iterN = neurons_.begin();
-	for (; iter != end; ++iter) {
-		if (*iter != *iterOutputs) {
-			iterN->educate(inputs, eps_*(*iterOutputs - *iter));
+	for (; iterRealRes != end; ++iterRealRes) {
+		if (*iterRealRes != *iterOutputs) {
+			iterN->educate(inputs, eps_*(*iterOutputs - *iterRealRes));
 		}
 		++iterOutputs;
 		++iterN;
