@@ -1,5 +1,6 @@
 #include "Neuron.h"
 
+// У каждого нейрона 15 входов.
 Neuron::Neuron(double om0) : weight_(15, 0)
 {
 	om0_ = om0;
@@ -17,10 +18,11 @@ double Neuron::om0() const
 
 int Neuron::run(const std::vector<int> &inputs)
 {
-	if (inputs.size() != 15) {
+	const size_t numInputs = 15;
+	if (inputs.size() != numInputs) {
 		return -1;
 	}
-	int sum = 0;
+	double sum = 0.0;
 	auto iter = inputs.begin();
 	auto end = inputs.end();
 	auto iterW = weight_.begin();
@@ -29,6 +31,7 @@ int Neuron::run(const std::vector<int> &inputs)
 		++iterW;
 	}
 	sum -= om0_;
+	// > или >= ? Сильно меняется скорость обучения.
 	if (sum > 0) {
 		return 1;
 	}
@@ -39,7 +42,8 @@ int Neuron::run(const std::vector<int> &inputs)
 
 void Neuron::educate(const std::vector<int> &inputs, double eps)
 {
-	if (inputs.size() != 15) {
+	const size_t numInputs = 15;
+	if (inputs.size() != numInputs) {
 		return;
 	}
 	auto iter = weight_.begin();

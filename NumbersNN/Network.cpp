@@ -6,7 +6,8 @@ Network::Network(const std::vector<int> om0s, double eps) : neurons_(10)
 		eps_ = eps;
 	else
 		eps_ = 0.5;
-	for (size_t i = 0; i < 10; ++i) {
+	const size_t numNeurons = 10;
+	for (size_t i = 0; i < numNeurons; ++i) {
 		neurons_[i].setOm0(om0s[i]);
 	}
 }
@@ -24,17 +25,19 @@ double Network::eps() const
 
 void Network::setOm0s(const std::vector<int> om0s)
 {
-	if (om0s.size() == 10) {
-		for (size_t i = 0; i < 10; ++i) {
+	const size_t numNeurons = 10;
+	if (om0s.size() == numNeurons) {
+		for (size_t i = 0; i < numNeurons; ++i) {
 			neurons_[i].setOm0(om0s[i]);
 		}
 	}
 }
 
-std::vector<int> Network::om0s() const
+std::vector<double> Network::om0s() const
 {
-	std::vector<int> result;
-	for (size_t i = 0; i < 10; ++i) {
+	std::vector<double> result;
+	const size_t numNeurons = 10;
+	for (size_t i = 0; i < numNeurons; ++i) {
 		result.push_back(neurons_[i].om0());
 	}
 	return result;
@@ -53,7 +56,9 @@ std::vector<int> Network::run(const std::vector<int> &inputs)
 
 bool Network::educate(const std::vector<int> &inputs, const std::vector<int> outputs)
 {
-	if (inputs.size() != 15 || outputs.size() != 10) {
+	const size_t numNeurons = 10;
+	const size_t numInputs = 15;
+	if (inputs.size() != numInputs || outputs.size() != numNeurons) {
 		return false;
 	}
 	std::vector<int> realResult = run(inputs);
